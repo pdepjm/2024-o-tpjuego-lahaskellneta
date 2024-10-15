@@ -9,13 +9,19 @@ object juegoDeDinosaurio {
     game.onTick(velocidad, "moverCactus2", {cactus2.desplazate()})
 
     // Apenas el dinosaurio colisione con un cactus, el juego termina
-    // game.whenCollideDo(dinosaurio, {elemento => elemento.teChocoElDino()})
+    game.whenCollideDo(dinosaurio, {elemento => elemento.teChocoElDino()})
 
     // con la tecla up el dinosaurio salta
-    // keyboard.up().onPressDo{dinosaurio.salta()}
+    keyboard.up().onPressDo{dinosaurio.salta()}
 
     game.width(45)
     game.height(20)
+  }
+
+  method finalizar() {
+    cactus1.detenete()
+    cactus2.detenete()
+    // game.addVisual(gameOver)
   }
 }
 
@@ -23,7 +29,18 @@ object dinosaurio {
   method image() = "manzana.png"
   var property position = game.origin()
   method salta() {
-    
+      if (position == game.origin()) {
+        self.subir()
+        game.schedule(450, { self.bajar() })
+    }
+  }
+
+  method bajar() {
+    position = game.origin()
+  }
+  
+  method subir() {
+    position = position.up(4)
   }
 }
 
@@ -31,15 +48,21 @@ class Cactus {
   const posX
   var property position = game.at(posX,0)
   var property image
+  var colisiono = false
 
   method teChocoElDino() {
-    // perder
+    juegoDeDinosaurio.finalizar()
+  }
+
+  method detenete() {
+    colisiono = true // de este modo, el cactus no se desplaza más
   }
 
   method desplazate() {
-    position = position.left(1)
-    // si llega al borde de la pantalla, aparece de nuevo por la derecha
-    if (position.x() == -1) position = game.at(game.width()-1,0)
+    if (not colisiono) {
+      position = position.left(1)
+      if (position.x() == -1) position = game.at(game.width()-1,0)
+    }
   }
 }
 
@@ -48,4 +71,7 @@ const cactus2 = new Cactus(posX=42,image="pera.png")
 
 // object suelo {
 //   method image() = ""
+// }
+// object gameOver {
+//   var property position = game.at(22,10) //centro del tablero
 // }
