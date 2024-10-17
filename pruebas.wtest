@@ -1,9 +1,28 @@
-// import example.*
+import example.*
 
-// describe "group of tests for pepita" {
+describe "Tests de los obstaculos" {
 
-//   test "pepita has initial energy" {
-//     assert.equals(100, pepita.energy())
-//   }
+  test "Cuando el dino choca con *cactus1*, desaparecen todos los visuales" {
+    cactus1.teChocoElDino()
+    var verificador
+    if(game.hasVisual(cactus1) && game.hasVisual(cactus2) && game.hasVisual(dinosaurio) && game.hasVisual(moneda)){
+        verificador = false
+    }
+    else{
+        verificador = true
+    }
+    assert.that(verificador)
+  }
+  test "Cuando el dino choca con *cactus2*, desaparecen todos los visuales" {
+    cactus2.teChocoElDino()
+    var verificador
+    if(game.hasVisual(cactus1) && game.hasVisual(cactus2) && game.hasVisual(dinosaurio) && game.hasVisual(moneda)){
+        verificador = false
+    }
+    else{
+        verificador = true
+    }
+    assert.that(verificador)
+  }
 
-// }
+}
