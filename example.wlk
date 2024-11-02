@@ -5,7 +5,7 @@ object juegoDeDinosaurio {
   
   method iniciar() {
     const objetos = objetosRasos + objetosConAltura + [null]
-    // pueden aparecer un objeto que vaya por el suelo (objetosRasos), 
+    // puede aparecer un objeto que vaya por el suelo (objetosRasos), 
     // uno que vaya por el aire (objetosConAltura) o ninguno (null)
     game.width(45)
     game.height(20)
@@ -21,26 +21,22 @@ object juegoDeDinosaurio {
     game.whenCollideDo(dinosaurio, { elemento => elemento.teChocoElDino(elemento.image()) })
   }
   
-  method aparecer(objeto) {
+    method aparecer(objeto) {
     if( objeto != null ) {
-      if (objetosRasos.contains(objeto)) self.crearObjetoRaso(objeto)
+      const objetoCreado = if (objetosRasos.contains(objeto)) self.crearObjetoRaso(objeto)
       else self.crearObjetoConAltura(objeto)
+
+      self.apareceYMovete(objetoCreado)
     }
   }
   
-  method crearObjetoRaso(objeto) {
-    const objetoCreado = new ObjetoRaso(image = objeto)
-    self.apareceYMovete(objetoCreado)
-  }
+  method crearObjetoRaso(objeto) = new ObjetoRaso(image = objeto)
   
-  method crearObjetoConAltura(objeto) {
-    const objetoCreado = new ObjetoConAltura(image = objeto)
-    self.apareceYMovete(objetoCreado)
-  }
+  method crearObjetoConAltura(objeto) = new ObjetoConAltura(image = objeto)
   
   method apareceYMovete(objeto) {
     game.addVisual(objeto)
-    game.onTick(100, "desplazamiento", { objeto.desplazate(2) })
+    game.onTick(120, "desplazamiento", { objeto.desplazate(2) })
   }
 }
 
@@ -64,7 +60,7 @@ object dinosaurio {
   }
 
   method sumarPtos(){}
-  method otraCosa(){}
+  method otraCosa(){image = "moneda.png"}
 }
 
 class ObjetoRaso {
