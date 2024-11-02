@@ -1,47 +1,60 @@
-const velocidad = 100
+const objetosRasos = ["banana.png"]
+const objetosConAltura = ["pera.png","moneda.png"]
 
 object juegoDeDinosaurio {
+  
   method iniciar() {
-    game.addVisual(dinosaurio)
-    game.addVisual(cactus1)
-    game.addVisual(cactus2)
-    game.addVisual(moneda)
-    game.onTick(velocidad, "moverCactus1", {cactus1.desplazate()})
-    game.onTick(velocidad, "moverCactus2", {cactus2.desplazate()})
-    game.onTick(velocidad, "moverMoneda", {moneda.desplazate()})
-
-    // Apenas el dinosaurio colisione con un cactus, el juego termina
-    game.whenCollideDo(dinosaurio, {elemento => elemento.teChocoElDino()})
-
-    // con la tecla up el dinosaurio salta
-    keyboard.up().onPressDo{dinosaurio.salta()}
-
+    const objetos = objetosRasos + objetosConAltura + [null]
+    // pueden aparecer un objeto que vaya por el suelo (objetosRasos), 
+    // uno que vaya por el aire (objetosConAltura) o ninguno (null)
     game.width(45)
     game.height(20)
+    game.addVisual(dinosaurio)
+    game.onTick(
+      1000,
+      "aparecerObjeto",
+      { self.aparecer(objetos.anyOne()) }
+    )
+    
+    keyboard.space().onPressDo({ dinosaurio.salta() })
+    
+    game.whenCollideDo(dinosaurio, { elemento => elemento.teChocoElDino(elemento.image()) })
   }
-
-  method finalizar() {
-    cactus1.detenete()
-    cactus2.detenete()
-    moneda.detenete()
-    game.removeVisual(dinosaurio)
-    game.removeVisual(cactus1)
-    game.removeVisual(cactus2)
-    game.removeVisual(moneda)
-    // game.addVisual(gameOver)
+  
+  method aparecer(objeto) {
+    if( objeto != null ) {
+      if (objetosRasos.contains(objeto)) self.crearObjetoRaso(objeto)
+      else self.crearObjetoConAltura(objeto)
+    }
+  }
+  
+  method crearObjetoRaso(objeto) {
+    const objetoCreado = new ObjetoRaso(image = objeto)
+    self.apareceYMovete(objetoCreado)
+  }
+  
+  method crearObjetoConAltura(objeto) {
+    const objetoCreado = new ObjetoConAltura(image = objeto)
+    self.apareceYMovete(objetoCreado)
+  }
+  
+  method apareceYMovete(objeto) {
+    game.addVisual(objeto)
+    game.onTick(100, "desplazamiento", { objeto.desplazate(2) })
   }
 }
 
 object dinosaurio {
-  method image() = "manzana.png"
   var property position = game.origin()
+  var property image = "manzana.png"
+  
   method salta() {
-      if (position == game.origin()) {
-        self.subir()
-        game.schedule(450, { self.bajar() })
+    if (position == game.origin()) {
+      self.subir()
+      game.schedule(450, { self.bajar() })
     }
   }
-
+  
   method bajar() {
     position = game.origin()
   }
@@ -49,60 +62,34 @@ object dinosaurio {
   method subir() {
     position = position.up(4)
   }
+
+  method sumarPtos(){}
+  method otraCosa(){}
 }
 
-class Cactus {
-  const posX
-  var property position = game.at(posX,0)
+class ObjetoRaso {
+  var property position = game.at(game.width() - 1, self.posY())
   var property image
-  var colisiono = false
-
-  method teChocoElDino() {
-    juegoDeDinosaurio.finalizar()
+  
+  method posY() = 0
+  
+  method teChocoElDino(_) {
+    game.stop()
   }
-
-  method detenete() {
-    colisiono = true // de este modo, el cactus no se desplaza más
-  }
-
-  method desplazate() {
-    if (not colisiono) {
-      position = position.left(1)
-      if (position.x() == -1) position = game.at(game.width()-1,0)
-    }
+  // si el dino choca con un objeto que va x el suelo el juego termina
+  
+  method desplazate(n) {
+    position = position.left(n)
   }
 }
 
-class Moneda {
-  const posX
-  var property position = game.at(posX,0)
-  var property image
-  var colisiono = false
+class ObjetoConAltura inherits ObjetoRaso {
+  override method posY() = 4
+  // cambiar 4 por valor al azar
 
-  method teChocoElDino() {
-    position = game.at(game.width()-1,0)
-    // sumar puntos
+  override method teChocoElDino(objetoChocado) {
+    if(objetoChocado=="moneda.png") dinosaurio.sumarPtos()
+    if(objetoChocado=="pera.png") dinosaurio.otraCosa()
   }
-
-  method detenete() {
-    colisiono = true // de este modo, el cactus no se desplaza más
-  }
-
-  method desplazate() {
-    if (not colisiono) {
-      position = position.left(1)
-      if (position.x() == -1) position = game.at(game.width()-1,0)
-    }
-  }
+  // si el dino choca con un objeto que va x el aire pueden pasar varias cosas
 }
-
-const cactus1 = new Cactus(posX=19,image="banana.png")
-const cactus2 = new Cactus(posX=43,image="pera.png")
-const moneda = new Moneda(posX=27,image="moneda.png")
-
-// object suelo {
-//   method image() = ""
-// }
-// object gameOver {
-//   var property position = game.at(22,10) //centro del tablero
-// }
