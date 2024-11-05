@@ -42,8 +42,8 @@ object dinosaurio {
     
   }
   
-  method otraCosa() {
-    image = "moneda.png"
+  method restarPtos() {
+    
   }
   
   method terminarJuego() {
@@ -88,7 +88,9 @@ class Obstaculo {
   var property position = game.at(game.width(), self.posY())
   var property image
   
-  method posY() = 0.randomUpTo(game.height() - 3).truncate(0)
+  const valores = [0,4,12,16]
+  
+  method posY() = valores.anyOne()
   
   method teChocoElDino()
   
@@ -105,7 +107,7 @@ class Moneda inherits Obstaculo {
 
 class Pera inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.otraCosa()
+    dinosaurio.restarPtos()
   }
 }
 
