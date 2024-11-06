@@ -15,6 +15,8 @@ object juegoDeDinosaurio {
     game.onTick(1000, "aparecerObjeto", { generadores.anyOne().generar() })
     
     keyboard.up().onPressDo({ dinosaurio.salta() })
+
+    keyboard.down().onPressDo({ dinosaurio.powerUP() })
     
     game.whenCollideDo(dinosaurio, { elemento => elemento.teChocoElDino() })
   }
