@@ -39,7 +39,21 @@ object dinosaurio {
   method subir() {
     position = position.up(4)
   }
+
+  method powerUP()
+  {
+    if (position == game.origin())
+    {
+      self.saltoDoble()
+      game.schedule(225,{self.bajar()})
+    }
+  }
   
+  method saltoDoble()
+  {
+    position = position.up(8)
+  }
+
   method sumarPtos() {
     
   }
