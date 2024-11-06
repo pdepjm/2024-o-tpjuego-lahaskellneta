@@ -2,7 +2,8 @@ const generadores = [
   generadorDeMonedas,
   generadorDePeras,
   generadorDeBananas,
-  generadorDeNada
+  generadorDeNada,
+  generadorDeFrutillas
 ]
 
 object juegoDeDinosaurio {
@@ -22,6 +23,7 @@ object juegoDeDinosaurio {
 object dinosaurio {
   var property position = game.origin()
   var property image = "manzana.png"
+  var inmunidad = 0
   
   method salta() {
     if (position == game.origin()) {
@@ -44,6 +46,11 @@ object dinosaurio {
   
   method restarPtos() {
     
+  }
+
+  method powerupInmunidad() {
+    inmunidad = 1
+    game.schedule(500, {inmunidad = 0})
   }
   
   method terminarJuego() {
@@ -84,6 +91,13 @@ object generadorDeNada {
   }
 }
 
+// Powerup de Inmunidad
+object generadorDeFrutillas inherits Generador {
+  override method generar() {
+    self.apareceYMovete(new Frutilla(image = "frutilla.png"))
+  }
+}
+
 class Obstaculo {
   var property position = game.at(game.width(), self.posY())
   var property image
@@ -107,12 +121,25 @@ class Moneda inherits Obstaculo {
 
 class Pera inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.restarPtos()
+    if(dinosaurio.inmunidad != 1)
+    {
+      dinosaurio.restarPtos()
+    }
   }
 }
 
 class Banana inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.terminarJuego()
+    if(dinosaurio.inmunidad != 1)
+    {
+      dinosaurio.terminarJuego()
+    }
+  }
+}
+
+// Powerup de Inmunidad
+class Frutilla inherits Obstaculo{
+  override method teChocoElDino() {
+    dinosaurio.powerupInmunidad()
   }
 }
