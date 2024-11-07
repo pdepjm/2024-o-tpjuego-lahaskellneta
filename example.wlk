@@ -26,7 +26,7 @@ object juegoDeDinosaurio {
 
 object dinosaurio {
   var property position = game.origin()
-  var property image = "manzana.png"
+  var property image = "Carpincho.png"
   var inmunidad = 0
   
   method salta() {
@@ -123,7 +123,7 @@ class Obstaculo {
   var property position = game.at(game.width(), self.posY())
   var property image
   
-  const valores = [0,4,12,16]
+  const valores = [3,7]
   
   method posY() = valores.anyOne()
   
