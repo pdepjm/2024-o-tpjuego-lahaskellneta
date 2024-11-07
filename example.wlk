@@ -11,7 +11,9 @@ object juegoDeDinosaurio {
     game.width(45)
     game.height(20)
     game.addVisual(dinosaurio)
-    
+
+    game.boardGround("fondoBosque.jpg")
+
     game.onTick(1000, "aparecerObjeto", { generadores.anyOne().generar() })
     
     keyboard.up().onPressDo({ dinosaurio.salta() })
