@@ -1,16 +1,7 @@
 import wollok.game.*
+import example.*
 
-import pepita.*
-
-program PepitaGame {
-	game.title("Pepita")
-	game.height(10)
-	game.width(10)
-	game.cellSize(100)
-
-	game.addVisual(pepita)
-
-	keyboard.w().onPressDo({ pepita.fly(1) })
-
+program DinoGame {
+	juegoDeDinosaurio.iniciar()
 	game.start()
 }
