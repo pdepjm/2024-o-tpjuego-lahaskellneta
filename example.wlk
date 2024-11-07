@@ -28,6 +28,9 @@ object dinosaurio {
   var inmunidad = 0
   
   method salta() {
+    if (inmunidad == 1){
+      inmunidad = 0
+    }
     if (position == game.origin()) {
       self.subir()
       game.schedule(450, { self.bajar() })
