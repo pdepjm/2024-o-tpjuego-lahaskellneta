@@ -11,7 +11,7 @@ object juegoDeDinosaurio {
     game.width(45)
     game.height(20)
     game.addVisual(dinosaurio)
-
+    
     game.boardGround("fondoBosque.jpg")
 
     game.onTick(1000, "aparecerObjeto", { generadores.anyOne().generar() })
@@ -24,19 +24,33 @@ object juegoDeDinosaurio {
   }
 }
 
+// VER ESTO o HACER ESTO
+object normal{
+  method salta() {
+    if (dinosaurio.puedeSaltar()) {
+      dinosaurio.subir()
+      game.schedule(450, { dinosaurio.bajar() })
+    }
+  }
+}
+//IDEM
+object inmune {
+  method inmune(){
+    dinosaurio.perderInmunidad()
+  }
+}
+
 object dinosaurio {
   var property position = game.origin()
   var property image = "Carpincho.png"
-  var inmunidad = 0
-  
+  var estado = normal  // ver esto
+
   method salta() {
-    if (inmunidad == 1){
-      inmunidad = 0
-    }
-    if (position == game.origin()) {
-      self.subir()
-      game.schedule(450, { self.bajar() })
-    }
+    estado.salta()
+  }
+
+  method recibirDanio(){
+    estado.recibirDanio()
   }
   
   method bajar() {
