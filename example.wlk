@@ -137,7 +137,7 @@ object generadorDeBananas inherits Generador {
 
 object generadorDeFrutillas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Frutilla(image = "frutilla.png"))
+    self.apareceYMovete(new Frutilla(image = "frutilla2.png"))
   }
 }
 
