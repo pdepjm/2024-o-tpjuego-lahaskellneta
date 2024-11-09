@@ -159,7 +159,7 @@ object generadorDeNada {
 }
 
 class Obstaculo {
-  var property position = game.at(game.width(), self.posY())
+  var property position = game.at(game.width()-1, self.posY())
   var property image
   const valores = [0, 4, 8]
   
