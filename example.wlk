@@ -119,31 +119,36 @@ class Generador {
 
 object generadorDeMonedas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Moneda(image = "moneda.png"))
+    // self.apareceYMovete(new Moneda(image = "moneda.png"))
+    self.apareceYMovete(new Obstaculo(image = "moneda.png"))
   }
 }
 
 object generadorDePeras inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Pera(image = "pera.png"))
+    // self.apareceYMovete(new Pera(image = "pera.png"))
+    self.apareceYMovete(new Obstaculo(image = "pera.png"))
   }
 }
 
 object generadorDeBananas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Banana(image = "banana.png"))
+    // self.apareceYMovete(new Banana(image = "banana.png"))
+    self.apareceYMovete(new Obstaculo(image = "banana.png"))
   }
 }
 
 object generadorDeFrutillas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Frutilla(image = "frutilla2.png"))
+    // self.apareceYMovete(new Frutilla(image = "frutilla2.png"))
+    self.apareceYMovete(new Obstaculo(image = "frutilla2.png"))
   }
 }
 
 object generadorDeUvas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Uvas(image = "uvas.png"))
+    // self.apareceYMovete(new Uvas(image = "uvas.png"))
+    self.apareceYMovete(new Obstaculo(image = "uvas.png"))
   }
 }
 
@@ -160,39 +165,40 @@ class Obstaculo {
   
   method posY() = valores.anyOne()
   
-  method teChocoElDino()
+  // method teChocoElDino()
+  method teChocoElDino() {game.stop()}
   
   method desplazate() {
     position = position.left(2)
   }
 }
 
-class Moneda inherits Obstaculo {
-  override method teChocoElDino() {
-    dinosaurio.sumarPtos(8)
-  }
-}
+// class Moneda inherits Obstaculo {
+//   override method teChocoElDino() {
+//     dinosaurio.sumarPtos(8)
+//   }
+// }
 
-class Pera inherits Obstaculo {
-  override method teChocoElDino() {
-    dinosaurio.restarPtos(4)
-  }
-}
+// class Pera inherits Obstaculo {
+//   override method teChocoElDino() {
+//     dinosaurio.restarPtos(4)
+//   }
+// }
 
-class Banana inherits Obstaculo {
-  override method teChocoElDino() {
-    dinosaurio.perder()
-  }
-}
+// class Banana inherits Obstaculo {
+//   override method teChocoElDino() {
+//     dinosaurio.perder()
+//   }
+// }
 
-class Frutilla inherits Obstaculo {
-  override method teChocoElDino() {
-    dinosaurio.cambiarEstadoPorUnosSeg(8000, inmune)
-  }
-}
+// class Frutilla inherits Obstaculo {
+//   override method teChocoElDino() {
+//     dinosaurio.cambiarEstadoPorUnosSeg(8000, inmune)
+//   }
+// }
 
-class Uvas inherits Obstaculo {
-  override method teChocoElDino() {
-    dinosaurio.cambiarEstadoPorUnosSeg(5000, dobleSalto)
-  }
-}
+// class Uvas inherits Obstaculo {
+//   override method teChocoElDino() {
+//     dinosaurio.cambiarEstadoPorUnosSeg(5000, dobleSalto)
+//   }
+// }
