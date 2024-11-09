@@ -1,9 +1,10 @@
 const generadores = [
-  generadorDeMonedas,
-  generadorDePeras,
-  generadorDeBananas,
-  generadorDeNada,
-  generadorDeFrutillas
+  generadorDeMonedas, // suman puntos
+  generadorDePeras, // restan puntos
+  generadorDeBananas, // termina el juego
+  generadorDeFrutillas, // inmunidad
+  generadorDeUvas, // doble salto
+  generadorDeNada
 ]
 
 object juegoDeDinosaurio {
@@ -11,46 +12,73 @@ object juegoDeDinosaurio {
     game.width(45)
     game.height(20)
     game.addVisual(dinosaurio)
-    
-    game.boardGround("fondoBosque.jpg")
-
+    game.boardGround("bosque.png")
     game.onTick(1000, "aparecerObjeto", { generadores.anyOne().generar() })
-    
-    keyboard.up().onPressDo({ dinosaurio.salta() })
-
-    keyboard.down().onPressDo({ dinosaurio.powerUP() })
-    
+    keyboard.up().onPressDo({ dinosaurio.saltar() })
     game.whenCollideDo(dinosaurio, { elemento => elemento.teChocoElDino() })
   }
 }
 
-// VER ESTO o HACER ESTO
-object normal{
-  method salta() {
-    if (dinosaurio.puedeSaltar()) {
-      dinosaurio.subir()
-      game.schedule(450, { dinosaurio.bajar() })
-    }
+object normal {
+  method puntosRestados(n) = n
+  
+  method puntosSumados(n) = n
+  
+  method terminarJuego() {
+    game.stop()
+  }
+  
+  method salto() {
+    if (dinosaurio.position() == game.origin()) dinosaurio.hacerSalto()
   }
 }
-//IDEM
+
+object dobleSalto {
+  method puntosRestados(n) = n
+  
+  method puntosSumados(n) = n
+  
+  method terminarJuego() {
+    game.stop()
+  }
+  
+  method salto() {
+    if ((dinosaurio.position() == game.origin()) || (dinosaurio.position() == game.at(0,4))) 
+    dinosaurio.hacerSalto()
+  }
+}
+
 object inmune {
-  method inmune(){
-    dinosaurio.perderInmunidad()
+  method puntosRestados(_) = 0
+  
+  method puntosSumados(n) = n
+  
+  method terminarJuego() {
+    
+  }
+  
+  method salto() {
+    if (dinosaurio.position() == game.origin()) {
+      dinosaurio.hacerSalto()
+      // Si el dino salta mientras que está inmune, pierde la inmunidad.
+      dinosaurio.estado(normal)
+    }
   }
 }
 
 object dinosaurio {
   var property position = game.origin()
-  var property image = "Carpincho.png"
-  var estado = normal  // ver esto
-
-  method salta() {
-    estado.salta()
+  var property image = "manzana.png"
+  var property puntos = 0
+  var property estado = normal
+  
+  method saltar() {
+    estado.salto()
   }
-
-  method recibirDanio(){
-    estado.recibirDanio()
+  
+  method hacerSalto() {
+    dinosaurio.subir()
+    game.schedule(600, { dinosaurio.bajar() })
   }
   
   method bajar() {
@@ -60,36 +88,23 @@ object dinosaurio {
   method subir() {
     position = position.up(4)
   }
-
-  method powerUP()
-  {
-    if (position == game.origin())
-    {
-      self.saltoDoble()
-      game.schedule(225,{self.bajar()})
-    }
+  
+  method sumarPtos(n) {
+    puntos -= estado.puntosSumados(n)
   }
   
-  method saltoDoble()
-  {
-    position = position.up(8)
-  }
-
-  method sumarPtos() {
-    
+  method restarPtos(n) {
+    puntos -= estado.puntosRestados(n)
   }
   
-  method restarPtos() {
-    
-  }
-
-  method powerupInmunidad() {
-    inmunidad = 1
-    game.schedule(500, {inmunidad = 0})
+  method perder() {
+    estado.terminarJuego()
   }
   
-  method terminarJuego() {
-    game.stop()
+  method cambiarEstadoPorUnosSeg(n, nuevoEstado) {
+    estado = nuevoEstado
+    // luego de n milisegundos el estado vuelve a ser normal
+    game.schedule(n, { estado = normal })
   }
 }
 
@@ -120,24 +135,28 @@ object generadorDeBananas inherits Generador {
   }
 }
 
-object generadorDeNada {
-  method generar() {
-
-  }
-}
-
-// Powerup de Inmunidad
 object generadorDeFrutillas inherits Generador {
   override method generar() {
     self.apareceYMovete(new Frutilla(image = "frutilla.png"))
   }
 }
 
+object generadorDeUvas inherits Generador {
+  override method generar() {
+    self.apareceYMovete(new Uvas(image = "uvas.png"))
+  }
+}
+
+object generadorDeNada {
+  method generar() {
+    
+  }
+}
+
 class Obstaculo {
   var property position = game.at(game.width(), self.posY())
   var property image
-  
-  const valores = [3,7]
+  const valores = [0, 4, 8]
   
   method posY() = valores.anyOne()
   
@@ -150,31 +169,30 @@ class Obstaculo {
 
 class Moneda inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.sumarPtos()
+    dinosaurio.sumarPtos(8)
   }
 }
 
 class Pera inherits Obstaculo {
   override method teChocoElDino() {
-    if(dinosaurio.inmunidad != 1)
-    {
-      dinosaurio.restarPtos()
-    }
+    dinosaurio.restarPtos(4)
   }
 }
 
 class Banana inherits Obstaculo {
   override method teChocoElDino() {
-    if(dinosaurio.inmunidad != 1)
-    {
-      dinosaurio.terminarJuego()
-    }
+    dinosaurio.perder()
   }
 }
 
-// Powerup de Inmunidad
-class Frutilla inherits Obstaculo{
+class Frutilla inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.powerupInmunidad()
+    dinosaurio.cambiarEstadoPorUnosSeg(8000, inmune)
+  }
+}
+
+class Uvas inherits Obstaculo {
+  override method teChocoElDino() {
+    dinosaurio.cambiarEstadoPorUnosSeg(5000, dobleSalto)
   }
 }
