@@ -31,7 +31,9 @@ object juegoDeDinosaurio {
     game.whenCollideDo(dinosaurio, { elemento => elemento.teChocoElDino() })
   }
 }
-
+object soundProgram {
+  keyboard.up().onPressDo({dinosaurio.saltar()})
+}
 object normal {
   method puntosRestados(n) = n
   
@@ -87,6 +89,7 @@ object dinosaurio {
   
   method saltar() {
     estado.salto()
+    game.sound("saltoDino.mp3").play()
   }
   
   method hacerSalto() {
