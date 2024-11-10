@@ -188,6 +188,7 @@ class Obstaculo {
 class Moneda inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.sumarPtos(8)
+    game.sound("dinoCoin.mp3").play()
   }
 }
 
