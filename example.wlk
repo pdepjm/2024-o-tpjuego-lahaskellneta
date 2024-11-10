@@ -9,6 +9,24 @@ const generadores = [
 
 object paleta {
   const property amarillo = "FFFF00FF"
+
+  const property blanco = "FFFFFFFF"
+}
+
+class Aviso{
+  method position() = game.at(22,16)
+
+  method text()
+
+  method textColor() = paleta.blanco()
+}
+
+object avisoDobleSalto inherits Aviso{
+  override method text() = "TENES DOBLE SALTO POR 5 SEGUNDOS"
+}
+
+object avisoInmunidad inherits Aviso{
+  override method text() = "TENES INMUNIDAD POR 8 SEGUNDOS"
 }
 
 object puntos{
@@ -47,6 +65,11 @@ object normal {
 }
 
 object dobleSalto {
+  method avisaAlUsuario() {
+    game.addVisual(avisoDobleSalto)
+    game.schedule(2500, {game.removeVisual(avisoDobleSalto)})
+  }
+
   method puntosRestados(n) = n
   
   method puntosSumados(n) = n
@@ -62,6 +85,10 @@ object dobleSalto {
 }
 
 object inmune {
+  method avisaAlUsuario() {game.addVisual(avisoInmunidad)
+  game.schedule(2500, {game.removeVisual(avisoInmunidad)})
+  }
+
   method puntosRestados(_) = 0
   
   method puntosSumados(n) = n
@@ -91,8 +118,8 @@ object dinosaurio {
   }
   
   method hacerSalto() {
-    dinosaurio.subir()
-    game.schedule(600, { dinosaurio.bajar() })
+    self.subir()
+    game.schedule(600, { self.bajar() })
   }
   
   method bajar() {
@@ -122,7 +149,7 @@ object dinosaurio {
   method cambiarEstadoPorUnosSeg(n, nuevoEstado) {
     estado = nuevoEstado
     // luego de n milisegundos el estado vuelve a ser normal
-    game.schedule(n, { estado = normal })
+    game.schedule(n, {estado = normal} )
   }
 }
 
@@ -207,11 +234,13 @@ class Banana inherits Obstaculo {
 class Frutilla inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(8000, inmune)
+    inmune.avisaAlUsuario()
   }
 }
 
 class Uvas inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(5000, dobleSalto)
+    dobleSalto.avisaAlUsuario()
   }
 }
