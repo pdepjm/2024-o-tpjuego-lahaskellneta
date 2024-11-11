@@ -21,12 +21,18 @@ class Aviso{
   method textColor() = paleta.blanco()
 }
 
-object avisoDobleSalto inherits Aviso{
-  override method text() = "TENES DOBLE SALTO POR 5 SEGUNDOS"
+class AvisoHabilidad inherits Aviso{
+  method duracion()
+
+  override method text() = "TENES DOBLE SALTO POR " + self.duracion().div(1000).toString() + " SEGUNDOS"
 }
 
-object avisoInmunidad inherits Aviso{
-  override method text() = "TENES INMUNIDAD POR 8 SEGUNDOS"
+object avisoDobleSalto inherits AvisoHabilidad{
+  override method duracion() = dobleSalto.duracion()
+}
+
+object avisoInmunidad inherits AvisoHabilidad{
+  override method duracion() = inmune.duracion()
 }
 
 object puntos{
@@ -70,6 +76,8 @@ object dobleSalto {
     game.schedule(2500, {game.removeVisual(avisoDobleSalto)})
   }
 
+  method duracion() = 7000
+
   method puntosRestados(n) = n
   
   method puntosSumados(n) = n
@@ -88,6 +96,8 @@ object inmune {
   method avisaAlUsuario() {game.addVisual(avisoInmunidad)
   game.schedule(2500, {game.removeVisual(avisoInmunidad)})
   }
+
+  method duracion() = 7000
 
   method puntosRestados(_) = 0
   
@@ -233,14 +243,14 @@ class Banana inherits Obstaculo {
 
 class Frutilla inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.cambiarEstadoPorUnosSeg(8000, inmune)
+    dinosaurio.cambiarEstadoPorUnosSeg(inmune.duracion(), inmune)
     inmune.avisaAlUsuario()
   }
 }
 
 class Uvas inherits Obstaculo {
   override method teChocoElDino() {
-    dinosaurio.cambiarEstadoPorUnosSeg(5000, dobleSalto)
+    dinosaurio.cambiarEstadoPorUnosSeg(dobleSalto.duracion(), dobleSalto)
     dobleSalto.avisaAlUsuario()
   }
 }
