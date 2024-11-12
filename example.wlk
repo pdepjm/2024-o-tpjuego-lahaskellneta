@@ -22,7 +22,7 @@ class Aviso{
 }
 
 class AvisoHabilidad inherits Aviso{
-  method duracion()
+  method duracion() = 0
 
   override method text() = "TENES DOBLE SALTO POR " + self.duracion().div(1000).toString() + " SEGUNDOS"
 }
