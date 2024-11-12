@@ -118,7 +118,7 @@ object inmune {
 
 object dinosaurio {
   var property position = game.origin()
-  var property image = "manzana.png"
+  var property image = "conejito.png"
   var property puntos = 0
   var property estado = normal
   
@@ -180,25 +180,25 @@ object generadorDeMonedas inherits Generador {
 
 object generadorDePeras inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Pera(image = "pera.png"))
+    self.apareceYMovete(new Pera(image = "mosquito.png"))
   }
 }
 
 object generadorDeBananas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Banana(image = "banana.png"))
+    self.apareceYMovete(new Banana(image = "lobo1.png"))
   }
 }
 
 object generadorDeFrutillas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Frutilla(image = "frutilla2.png"))
+    self.apareceYMovete(new Frutilla(image = "escudo1.png"))
   }
 }
 
 object generadorDeUvas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Uvas(image = "uvas.png"))
+    self.apareceYMovete(new Uvas(image = "alas3.png"))
   }
 }
 
