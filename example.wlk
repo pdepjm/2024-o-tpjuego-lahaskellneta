@@ -45,6 +45,11 @@ object puntos{
 
 object juegoDeDinosaurio {
   method iniciar() {
+    const musiquita = game.sound("musiquita.mp3")
+    musiquita.shouldLoop(true)
+    musiquita.volume(0.1)
+    game.schedule(500, {musiquita.play()})
+    keyboard.p().onPressDo({musiquita.pause()})
     game.width(45)
     game.height(20)
     game.addVisual(dinosaurio)
