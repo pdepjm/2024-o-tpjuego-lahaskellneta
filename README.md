@@ -72,4 +72,6 @@ Tu objetivo es avanzar lo más lejos posible mientras esquivas objetos peligroso
 ## Controles:
 
 - **Flecha arriba**: Saltar
+- **Letra P **: Pausar musica
+
 
