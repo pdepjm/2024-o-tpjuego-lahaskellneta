@@ -232,6 +232,7 @@ class Moneda inherits Obstaculo {
 class Pera inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.restarPtos(4)
+    game.sound("golpeMosquito.mp3").play()
   }
 }
 
