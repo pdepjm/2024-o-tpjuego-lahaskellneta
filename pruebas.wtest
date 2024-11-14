@@ -1,9 +1,79 @@
-import pepita.*
+import example.*
 
-describe "group of tests for pepita" {
-
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+describe "Tests de los obstaculos" {
+  test "La puntuación del conejo aumenta de 0 a 8 al recoger una moneda, la moneda suma 8 puntos" {
+    dinosaurio.puntos(0)  
+    generadorDeMonedas.generar()
+    var moneda = new Moneda(image = "moneda.png")
+    moneda.teChocoElDino()  
+    assert.equals(8,dinosaurio.puntos())
   }
 
+  test "La puntuación del conejo disminuye de 10 a 6 al chocar con mosquito, ya que el mosquito resta 4 puntos" {
+  dinosaurio.puntos(10)
+  generadorDeMosquitos.generar()
+  var mosquito = new Mosquito(image = "mosquito.png") 
+  mosquito.teChocoElDino()
+  assert.equals(6,dinosaurio.puntos())
+}
+}
+
+describe "Tests de saltos" {
+test "El conejo obtiene doble salto al chocar las alas" {
+  dinosaurio.estado(normal)  
+  generadorDeAlas.generar() 
+  var alas = new Alas(image = "escudo1.png") 
+  alas.teChocoElDino()
+  assert.equals(dobleSalto,dinosaurio.estado())
+}
+test "El conejo se mueve a la posicion (0,4) al saltar" {
+  dinosaurio.saltar()  
+  assert.equals(game.at(0,4),dinosaurio.position())
+}
+
+test "El conejo no puede moverse a la posicion (0,8) haciendo doble salto sin el buff de las alas" {
+  dinosaurio.saltar()  
+  dinosaurio.saltar()  
+  assert.equals(game.at(0,4),dinosaurio.position())
+}
+test "El conejo se mueve a la posicion (0,8) al hacer doble salto y tener buff de alas" {
+  generadorDeAlas.generar() 
+  var alas = new Alas(image = "escudo1.png") 
+  alas.teChocoElDino()
+  dinosaurio.saltar()
+  dinosaurio.saltar()    
+  assert.equals(game.at(0,8),dinosaurio.position())
+}
+}
+
+describe "Tests de inmunidad" {
+  test "El conejo obtiene inmunidad al chocar el escudo" {
+  dinosaurio.estado(normal) 
+  generadorDeEscudos.generar()  
+  var escudo = new Escudo(image = "escudo1.png") 
+  escudo.teChocoElDino()
+  assert.equals(inmune,dinosaurio.estado())
+}
+  test "El conejo con inmunidad no pierde puntos al chocar con el mosquito" {
+    dinosaurio.puntos(10)
+    dinosaurio.estado(normal) 
+    generadorDeEscudos.generar()
+    generadorDeMosquitos.generar() 
+    var escudo = new Escudo(image = "escudo1.png") 
+    escudo.teChocoElDino()
+    var mosquito = new Mosquito(image = "mosquito.png") 
+    mosquito.teChocoElDino()
+    assert.equals(10,dinosaurio.puntos())
+  }
+test "El conejo con inmunidad no pierde el juego al chocar con el lobo" {
+    dinosaurio.estado(normal) 
+    generadorDeEscudos.generar()
+    generadorDeLobos.generar() 
+    var escudo = new Escudo(image = "escudo1.png") 
+    escudo.teChocoElDino()
+    var lobo = new Lobo(image = "lobo1.png") 
+    lobo.teChocoElDino()
+    dinosaurio.saltar()  
+    assert.equals(game.at(0,4),dinosaurio.position())
+  }
 }
