@@ -46,6 +46,7 @@ Tu objetivo es avanzar lo más lejos posible mientras esquivas objetos peligroso
 ## Importante sobre los efectos de los objetos
 
 - Si obtienes tanto el **escudo azul** como las **alas** en el mismo juego, solo se aplicará el último efecto que hayas recogido. ¡Elige bien qué objeto recoger!
+- Se pierde inmunidad al saltar
 
 ## Reglas Básicas
 
