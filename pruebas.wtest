@@ -18,15 +18,7 @@ describe "Tests de los obstaculos" {
 }
 }
 
-describe "Tests de los buffs" {
-test "El conejo obtiene inmunidad al chocar el escudo" {
-  dinosaurio.estado(normal) 
-  generadorDeEscudos.generar()  
-  var escudo = new Escudo(image = "escudo1.png") 
-  escudo.teChocoElDino()
-  assert.equals(inmune,dinosaurio.estado())
-}
-
+describe "Tests de saltos" {
 test "El conejo obtiene doble salto al chocar las alas" {
   dinosaurio.estado(normal)  
   generadorDeAlas.generar() 
@@ -34,4 +26,54 @@ test "El conejo obtiene doble salto al chocar las alas" {
   alas.teChocoElDino()
   assert.equals(dobleSalto,dinosaurio.estado())
 }
+test "El conejo se mueve a la posicion (0,4) al saltar" {
+  dinosaurio.saltar()  
+  assert.equals(game.at(0,4),dinosaurio.position())
+}
+
+test "El conejo no puede moverse a la posicion (0,8) haciendo doble salto sin el buff de las alas" {
+  dinosaurio.saltar()  
+  dinosaurio.saltar()  
+  assert.equals(game.at(0,4),dinosaurio.position())
+}
+test "El conejo se mueve a la posicion (0,8) al hacer doble salto y tener buff de alas" {
+  generadorDeAlas.generar() 
+  var alas = new Alas(image = "escudo1.png") 
+  alas.teChocoElDino()
+  dinosaurio.saltar()
+  dinosaurio.saltar()    
+  assert.equals(game.at(0,8),dinosaurio.position())
+}
+}
+
+describe "Tests de inmunidad" {
+  test "El conejo obtiene inmunidad al chocar el escudo" {
+  dinosaurio.estado(normal) 
+  generadorDeEscudos.generar()  
+  var escudo = new Escudo(image = "escudo1.png") 
+  escudo.teChocoElDino()
+  assert.equals(inmune,dinosaurio.estado())
+}
+  test "El conejo con inmunidad no pierde puntos al chocar con el mosquito" {
+    dinosaurio.puntos(10)
+    dinosaurio.estado(normal) 
+    generadorDeEscudos.generar()
+    generadorDeMosquitos.generar() 
+    var escudo = new Escudo(image = "escudo1.png") 
+    escudo.teChocoElDino()
+    var mosquito = new Mosquito(image = "mosquito.png") 
+    mosquito.teChocoElDino()
+    assert.equals(10,dinosaurio.puntos())
+  }
+test "El conejo con inmunidad no pierde el juego al chocar con el lobo" {
+    dinosaurio.estado(normal) 
+    generadorDeEscudos.generar()
+    generadorDeLobos.generar() 
+    var escudo = new Escudo(image = "escudo1.png") 
+    escudo.teChocoElDino()
+    var lobo = new Lobo(image = "lobo1.png") 
+    lobo.teChocoElDino()
+    dinosaurio.saltar()  
+    assert.equals(game.at(0,4),dinosaurio.position())
+  }
 }
