@@ -2,6 +2,22 @@ import example.*
 
 describe "Tests de los obstaculos" {
 
+  test "La puntuación aumenta de 0 a 8 al recoger una moneda" {
+    dinosaurio.puntos(0)  
+    generadorDeMonedas.generar()
+    var moneda = new Moneda(image = "moneda.png")
+    moneda.teChocoElDino()  
+    assert.equals(8,dinosaurio.puntos())
+  }
+
+  test "La puntuación disminuye de 10 a 6 al chocar con mosquito" {
+  dinosaurio.puntos(10)
+  generadorDePeras.generar()
+  var pera = new Pera(image = "mosquito.png") 
+  pera.teChocoElDino()
+  assert.equals(6,dinosaurio.puntos())
+}
+
   test "Cuando el dino choca con *cactus1*, desaparecen todos los visuales" {
     cactus1.teChocoElDino()
     var verificador
@@ -24,5 +40,4 @@ describe "Tests de los obstaculos" {
     }
     assert.that(verificador)
   }
-
 }
