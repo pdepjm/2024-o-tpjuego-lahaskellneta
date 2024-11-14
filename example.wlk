@@ -1,9 +1,9 @@
 const generadores = [
   generadorDeMonedas, // suman puntos
-  generadorDePeras, // restan puntos
-  generadorDeBananas, // termina el juego
-  generadorDeFrutillas, // inmunidad
-  generadorDeUvas, // doble salto
+  generadorDeMosquitos, // restan puntos
+  generadorDeLobos, // termina el juego
+  generadorDeEscudos, // inmunidad
+  generadorDeAlas, // doble salto
   generadorDeNada
 ]
 
@@ -178,27 +178,27 @@ object generadorDeMonedas inherits Generador {
   }
 }
 
-object generadorDePeras inherits Generador {
+object generadorDeMosquitos inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Pera(image = "mosquito.png"))
+    self.apareceYMovete(new Mosquito(image = "mosquito.png"))
   }
 }
 
-object generadorDeBananas inherits Generador {
+object generadorDeLobos inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Banana(image = "lobo1.png"))
+    self.apareceYMovete(new Lobo(image = "lobo1.png"))
   }
 }
 
-object generadorDeFrutillas inherits Generador {
+object generadorDeEscudos inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Frutilla(image = "escudo1.png"))
+    self.apareceYMovete(new Escudo(image = "escudo1.png"))
   }
 }
 
-object generadorDeUvas inherits Generador {
+object generadorDeAlas inherits Generador {
   override method generar() {
-    self.apareceYMovete(new Uvas(image = "alas3.png"))
+    self.apareceYMovete(new Alas(image = "alas3.png"))
   }
 }
 
@@ -229,20 +229,20 @@ class Moneda inherits Obstaculo {
   }
 }
 
-class Pera inherits Obstaculo {
+class Mosquito inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.restarPtos(4)
     game.sound("golpeMosquito.mp3").play()
   }
 }
 
-class Banana inherits Obstaculo {
+class Lobo inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.perder()
   }
 }
 
-class Frutilla inherits Obstaculo {
+class Escudo inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(inmune.duracion(), inmune)
     inmune.avisaAlUsuario()
@@ -251,7 +251,7 @@ class Frutilla inherits Obstaculo {
   }
 }
 
-class Uvas inherits Obstaculo {
+class Alas inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(dobleSalto.duracion(), dobleSalto)
     dobleSalto.avisaAlUsuario()

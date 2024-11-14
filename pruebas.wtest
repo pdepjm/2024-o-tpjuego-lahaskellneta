@@ -11,9 +11,9 @@ describe "Tests de los obstaculos" {
 
   test "La puntuación del conejo disminuye de 10 a 6 al chocar con mosquito, ya que el mosquito resta 4 puntos" {
   dinosaurio.puntos(10)
-  generadorDePeras.generar()
-  var pera = new Pera(image = "mosquito.png") 
-  pera.teChocoElDino()
+  generadorDeMosquitos.generar()
+  var mosquito = new Mosquito(image = "mosquito.png") 
+  mosquito.teChocoElDino()
   assert.equals(6,dinosaurio.puntos())
 }
 }
@@ -21,17 +21,17 @@ describe "Tests de los obstaculos" {
 describe "Tests de los buffs" {
 test "El conejo obtiene inmunidad al chocar el escudo" {
   dinosaurio.estado(normal) 
-  generadorDeFrutillas.generar()  
-  var frutilla = new Frutilla(image = "escudo1.png") 
-  frutilla.teChocoElDino()
+  generadorDeEscudos.generar()  
+  var escudo = new Escudo(image = "escudo1.png") 
+  escudo.teChocoElDino()
   assert.equals(inmune,dinosaurio.estado())
 }
 
 test "El conejo obtiene doble salto al chocar las alas" {
   dinosaurio.estado(normal)  
-  generadorDeUvas.generar() 
-  var uvas = new Uvas(image = "escudo1.png") 
-  uvas.teChocoElDino()
+  generadorDeAlas.generar() 
+  var alas = new Alas(image = "escudo1.png") 
+  alas.teChocoElDino()
   assert.equals(dobleSalto,dinosaurio.estado())
 }
 }
