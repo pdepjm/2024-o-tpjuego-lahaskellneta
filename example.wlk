@@ -246,6 +246,8 @@ class Frutilla inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(inmune.duracion(), inmune)
     inmune.avisaAlUsuario()
+    game.sound("buff.mp3").play()
+
   }
 }
 
@@ -253,5 +255,6 @@ class Uvas inherits Obstaculo {
   override method teChocoElDino() {
     dinosaurio.cambiarEstadoPorUnosSeg(dobleSalto.duracion(), dobleSalto)
     dobleSalto.avisaAlUsuario()
+    game.sound("alasBuff.mp3").play()
   }
 }
