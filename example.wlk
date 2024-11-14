@@ -151,6 +151,8 @@ object dinosaurio {
   
   method restarPtos(n) {
     puntos -= estado.puntosRestados(n)
+    if(self.puntos()<0)
+    self.perder()
   }
   
   method perder() {
