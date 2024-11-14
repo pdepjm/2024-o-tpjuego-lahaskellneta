@@ -23,24 +23,24 @@ class Aviso{
 
 class AvisoHabilidad inherits Aviso{
   method duracion() = 0
-
-  override method text() = "TENES DOBLE SALTO POR " + self.duracion().div(1000).toString() + " SEGUNDOS"
 }
 
 object avisoDobleSalto inherits AvisoHabilidad{
   override method duracion() = dobleSalto.duracion()
+  override method text() = "TENES DOBLE SALTO POR " + self.duracion().div(1000).toString() + " SEGUNDOS"
 }
 
 object avisoInmunidad inherits AvisoHabilidad{
   override method duracion() = inmune.duracion()
+  override method text() = "TENES INMUNIDAD POR " + self.duracion().div(1000).toString() + " SEGUNDOS"
 }
 
 object puntos{
-   method position() = game.at(2,17)
+  method position() = game.at(2,17)
 
-   method text() = "PUNTUACION: " + dinosaurio.puntos().toString()
+  method text() = "PUNTUACION: " + dinosaurio.puntos().toString()
 
-   method textColor() = paleta.amarillo()
+  method textColor() = paleta.amarillo()
 }
 
 object juegoDeDinosaurio {
